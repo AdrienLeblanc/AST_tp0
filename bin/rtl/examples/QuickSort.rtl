@@ -1,0 +1,183 @@
+func Main(a)
+  entry:
+    t.1 = Alloc(2)
+    t.0 = call QS.Start(t.1 10)
+    PrintInt(t.0)
+    ret 
+
+func QS.Start(this sz)
+  entry:
+    aux01 = call QS.Init(this sz)
+    aux01 = call QS.Print(this)
+    PrintInt(9999)
+    t.0 = [this+1]
+    aux01 = Sub(t.0 1)
+    aux01 = call QS.Sort(this 0 aux01)
+    aux01 = call QS.Print(this)
+    ret 0
+
+func QS.Sort(this left right)
+  entry:
+    t = 0
+    t.0 = Lt(left right)
+    if t.0 goto if0_then else if0_else
+  if0_then:
+    t.1 = [this]
+    t.2 = Add(t.1 right)
+    v = [t.2+1]
+    i = Sub(left 1)
+    j = right
+    cont01 = 1
+    goto while0_test
+  if0_else:
+    nt = 0
+    goto if0_end
+  if0_end:
+    ret 0
+  while0_test:
+    if cont01 goto while0_body else while0_end
+  while0_body:
+    cont02 = 1
+    goto while1_test
+  while0_end:
+    t.24 = [this]
+    t.25 = Add(t.24 i)
+    t.23 = [t.25+1]
+    t.22 = [this]
+    t.26 = Add(t.22 j)
+    [t.26+1] = t.23
+    t.29 = [this]
+    t.30 = Add(t.29 right)
+    t.28 = [t.30+1]
+    t.27 = [this]
+    t.31 = Add(t.27 i)
+    [t.31+1] = t.28
+    t.32 = [this]
+    t.33 = Add(t.32 right)
+    [t.33+1] = t
+    t.34 = Sub(i 1)
+    nt = call QS.Sort(this left t.34)
+    t.35 = Add(i 1)
+    nt = call QS.Sort(this t.35 right)
+    goto if0_end
+  while1_test:
+    if cont02 goto while1_body else while1_end
+  while1_body:
+    i = Add(i 1)
+    t.3 = [this]
+    t.4 = Add(t.3 i)
+    aux03 = [t.4+1]
+    t.6 = Lt(aux03 v)
+    t.5 = Sub(1 t.6)
+    if t.5 goto if1_then else if1_else
+  while1_end:
+    cont02 = 1
+    goto while2_test
+  if1_then:
+    cont02 = 0
+    goto if1_end
+  if1_else:
+    cont02 = 1
+    goto if1_end
+  if1_end:
+    goto while1_test
+  while2_test:
+    if cont02 goto while2_body else while2_end
+  while2_body:
+    j = Sub(j 1)
+    t.7 = [this]
+    t.8 = Add(t.7 j)
+    aux03 = [t.8+1]
+    t.10 = Lt(v aux03)
+    t.9 = Sub(1 t.10)
+    if t.9 goto if2_then else if2_else
+  while2_end:
+    t.11 = [this]
+    t.12 = Add(t.11 i)
+    t = [t.12+1]
+    t.15 = [this]
+    t.16 = Add(t.15 j)
+    t.14 = [t.16+1]
+    t.13 = [this]
+    t.17 = Add(t.13 i)
+    [t.17+1] = t.14
+    t.18 = [this]
+    t.19 = Add(t.18 j)
+    [t.19+1] = t
+    t.21 = Add(i 1)
+    t.20 = Lt(j t.21)
+    if t.20 goto if3_then else if3_else
+  if2_then:
+    cont02 = 0
+    goto if2_end
+  if2_else:
+    cont02 = 1
+    goto if2_end
+  if2_end:
+    goto while2_test
+  if3_then:
+    cont01 = 0
+    goto if3_end
+  if3_else:
+    cont01 = 1
+    goto if3_end
+  if3_end:
+    goto while0_test
+
+func QS.Print(this)
+  entry:
+    j = 0
+    goto while0_test
+  while0_test:
+    t.1 = [this+1]
+    t.0 = Lt(j t.1)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.3 = [this]
+    t.4 = Add(t.3 j)
+    t.2 = [t.4+1]
+    PrintInt(t.2)
+    j = Add(j 1)
+    goto while0_test
+  while0_end:
+    ret 0
+
+func QS.Init(this sz)
+  entry:
+    [this+1] = sz
+    t.1 = Add(1 sz)
+    t.0 = Alloc(t.1)
+    [t.0] = sz
+    [this] = t.0
+    t.2 = [this]
+    t.3 = Add(t.2 0)
+    [t.3+1] = 20
+    t.4 = [this]
+    t.5 = Add(t.4 1)
+    [t.5+1] = 7
+    t.6 = [this]
+    t.7 = Add(t.6 2)
+    [t.7+1] = 12
+    t.8 = [this]
+    t.9 = Add(t.8 3)
+    [t.9+1] = 18
+    t.10 = [this]
+    t.11 = Add(t.10 4)
+    [t.11+1] = 2
+    t.12 = [this]
+    t.13 = Add(t.12 5)
+    [t.13+1] = 11
+    t.14 = [this]
+    t.15 = Add(t.14 6)
+    [t.15+1] = 6
+    t.16 = [this]
+    t.17 = Add(t.16 7)
+    [t.17+1] = 9
+    t.18 = [this]
+    t.19 = Add(t.18 8)
+    [t.19+1] = 19
+    t.20 = [this]
+    t.21 = Add(t.20 9)
+    [t.21+1] = 5
+    ret 0
+

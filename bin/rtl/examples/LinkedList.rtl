@@ -1,0 +1,289 @@
+func Main(a)
+  entry:
+    t.1 = Alloc(0)
+    t.0 = call LL.Start(t.1)
+    PrintInt(t.0)
+    ret 
+
+func Element.Init(this v_Age v_Salary v_Married)
+  entry:
+    [this] = v_Age
+    [this+1] = v_Salary
+    [this+2] = v_Married
+    ret 1
+
+func Element.GetAge(this)
+  entry:
+    t.0 = [this]
+    ret t.0
+
+func Element.GetSalary(this)
+  entry:
+    t.0 = [this+1]
+    ret t.0
+
+func Element.GetMarried(this)
+  entry:
+    t.0 = [this+2]
+    ret t.0
+
+func Element.Equal(this other)
+  entry:
+    ret_val = 1
+    aux01 = call Element.GetAge(other)
+    t.2 = [this]
+    t.1 = call Element.Compare(this aux01 t.2)
+    t.0 = Sub(1 t.1)
+    if t.0 goto if0_then else if0_else
+  if0_then:
+    ret_val = 0
+    goto if0_end
+  if0_else:
+    aux02 = call Element.GetSalary(other)
+    t.5 = [this+1]
+    t.4 = call Element.Compare(this aux02 t.5)
+    t.3 = Sub(1 t.4)
+    if t.3 goto if1_then else if1_else
+  if0_end:
+    ret ret_val
+  if1_then:
+    ret_val = 0
+    goto if1_end
+  if1_else:
+    t.6 = [this+2]
+    if t.6 goto if2_then else if2_else
+  if1_end:
+    goto if0_end
+  if2_then:
+    t.8 = call Element.GetMarried(other)
+    t.7 = Sub(1 t.8)
+    if t.7 goto if3_then else if3_else
+  if2_else:
+    t.9 = call Element.GetMarried(other)
+    if t.9 goto if4_then else if4_else
+  if2_end:
+    goto if1_end
+  if3_then:
+    ret_val = 0
+    goto if3_end
+  if3_else:
+    nt = 0
+    goto if3_end
+  if3_end:
+    goto if2_end
+  if4_then:
+    ret_val = 0
+    goto if4_end
+  if4_else:
+    nt = 0
+    goto if4_end
+  if4_end:
+    goto if2_end
+
+func Element.Compare(this num1 num2)
+  entry:
+    retval = 0
+    aux02 = Add(num2 1)
+    t.0 = Lt(num1 num2)
+    if t.0 goto if0_then else if0_else
+  if0_then:
+    retval = 0
+    goto if0_end
+  if0_else:
+    t.2 = Lt(num1 aux02)
+    t.1 = Sub(1 t.2)
+    if t.1 goto if1_then else if1_else
+  if0_end:
+    ret retval
+  if1_then:
+    retval = 0
+    goto if1_end
+  if1_else:
+    retval = 1
+    goto if1_end
+  if1_end:
+    goto if0_end
+
+func List.Init(this)
+  entry:
+    [this+2] = 1
+    ret 1
+
+func List.InitNew(this v_elem v_next v_end)
+  entry:
+    [this+2] = v_end
+    [this] = v_elem
+    [this+1] = v_next
+    ret 1
+
+func List.Insert(this new_elem)
+  entry:
+    aux03 = this
+    aux02 = Alloc(3)
+    ret_val = call List.InitNew(aux02 new_elem aux03 0)
+    ret aux02
+
+func List.SetNext(this v_next)
+  entry:
+    [this+1] = v_next
+    ret 1
+
+func List.Delete(this e)
+  entry:
+    my_head = this
+    ret_val = 0
+    aux04 = Sub(0 1)
+    aux01 = this
+    prev = this
+    var_end = [this+2]
+    var_elem = [this]
+    goto while0_test
+  while0_test:
+    t.1 = Sub(1 var_end)
+    t.2 = Sub(1 ret_val)
+    t.0 = And(t.1 t.2)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.3 = call Element.Equal(e var_elem)
+    if t.3 goto if0_then else if0_else
+  while0_end:
+    ret my_head
+  if0_then:
+    ret_val = 1
+    t.4 = Lt(aux04 0)
+    if t.4 goto if1_then else if1_else
+  if0_else:
+    nt = 0
+    goto if0_end
+  if0_end:
+    t.8 = Sub(1 ret_val)
+    if t.8 goto if2_then else if2_else
+  if1_then:
+    my_head = call List.GetNext(aux01)
+    goto if1_end
+  if1_else:
+    t.5 = Sub(0 555)
+    PrintInt(t.5)
+    t.6 = call List.GetNext(aux01)
+    aux05 = call List.SetNext(prev t.6)
+    t.7 = Sub(0 555)
+    PrintInt(t.7)
+    goto if1_end
+  if1_end:
+    goto if0_end
+  if2_then:
+    prev = aux01
+    aux01 = call List.GetNext(aux01)
+    var_end = call List.GetEnd(aux01)
+    var_elem = call List.GetElem(aux01)
+    aux04 = 1
+    goto if2_end
+  if2_else:
+    nt = 0
+    goto if2_end
+  if2_end:
+    goto while0_test
+
+func List.Search(this e)
+  entry:
+    int_ret_val = 0
+    aux01 = this
+    var_end = [this+2]
+    var_elem = [this]
+    goto while0_test
+  while0_test:
+    t.0 = Sub(1 var_end)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.1 = call Element.Equal(e var_elem)
+    if t.1 goto if0_then else if0_else
+  while0_end:
+    ret int_ret_val
+  if0_then:
+    int_ret_val = 1
+    goto if0_end
+  if0_else:
+    nt = 0
+    goto if0_end
+  if0_end:
+    aux01 = call List.GetNext(aux01)
+    var_end = call List.GetEnd(aux01)
+    var_elem = call List.GetElem(aux01)
+    goto while0_test
+
+func List.GetEnd(this)
+  entry:
+    t.0 = [this+2]
+    ret t.0
+
+func List.GetElem(this)
+  entry:
+    t.0 = [this]
+    ret t.0
+
+func List.GetNext(this)
+  entry:
+    t.0 = [this+1]
+    ret t.0
+
+func List.Print(this)
+  entry:
+    aux01 = this
+    var_end = [this+2]
+    var_elem = [this]
+    goto while0_test
+  while0_test:
+    t.0 = Sub(1 var_end)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.1 = call Element.GetAge(var_elem)
+    PrintInt(t.1)
+    aux01 = call List.GetNext(aux01)
+    var_end = call List.GetEnd(aux01)
+    var_elem = call List.GetElem(aux01)
+    goto while0_test
+  while0_end:
+    ret 1
+
+func LL.Start(this)
+  entry:
+    last_elem = Alloc(3)
+    aux01 = call List.Init(last_elem)
+    head = last_elem
+    aux01 = call List.Init(head)
+    aux01 = call List.Print(head)
+    el01 = Alloc(3)
+    aux01 = call Element.Init(el01 25 37000 0)
+    head = call List.Insert(head el01)
+    aux01 = call List.Print(head)
+    PrintInt(10000000)
+    el01 = Alloc(3)
+    aux01 = call Element.Init(el01 39 42000 1)
+    el02 = el01
+    head = call List.Insert(head el01)
+    aux01 = call List.Print(head)
+    PrintInt(10000000)
+    el01 = Alloc(3)
+    aux01 = call Element.Init(el01 22 34000 0)
+    head = call List.Insert(head el01)
+    aux01 = call List.Print(head)
+    el03 = Alloc(3)
+    aux01 = call Element.Init(el03 27 34000 0)
+    t.0 = call List.Search(head el02)
+    PrintInt(t.0)
+    t.1 = call List.Search(head el03)
+    PrintInt(t.1)
+    PrintInt(10000000)
+    el01 = Alloc(3)
+    aux01 = call Element.Init(el01 28 35000 0)
+    head = call List.Insert(head el01)
+    aux01 = call List.Print(head)
+    PrintInt(2220000)
+    head = call List.Delete(head el02)
+    aux01 = call List.Print(head)
+    PrintInt(33300000)
+    head = call List.Delete(head el01)
+    aux01 = call List.Print(head)
+    PrintInt(44440000)
+    ret 0
+

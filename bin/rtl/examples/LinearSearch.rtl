@@ -1,0 +1,108 @@
+func Main(a)
+  entry:
+    t.1 = Alloc(2)
+    t.0 = call LS.Start(t.1 10)
+    PrintInt(t.0)
+    ret 
+
+func LS.Start(this sz)
+  entry:
+    aux01 = call LS.Init(this sz)
+    aux02 = call LS.Print(this)
+    PrintInt(9999)
+    t.0 = call LS.Search(this 8)
+    PrintInt(t.0)
+    t.1 = call LS.Search(this 12)
+    PrintInt(t.1)
+    t.2 = call LS.Search(this 17)
+    PrintInt(t.2)
+    t.3 = call LS.Search(this 50)
+    PrintInt(t.3)
+    ret 55
+
+func LS.Print(this)
+  entry:
+    j = 1
+    goto while0_test
+  while0_test:
+    t.1 = [this+1]
+    t.0 = Lt(j t.1)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.3 = [this]
+    t.4 = Add(t.3 j)
+    t.2 = [t.4+1]
+    PrintInt(t.2)
+    j = Add(j 1)
+    goto while0_test
+  while0_end:
+    ret 0
+
+func LS.Search(this num)
+  entry:
+    j = 1
+    ls01 = 0
+    ifound = 0
+    goto while0_test
+  while0_test:
+    t.1 = [this+1]
+    t.0 = Lt(j t.1)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.2 = [this]
+    t.3 = Add(t.2 j)
+    aux01 = [t.3+1]
+    aux02 = Add(num 1)
+    t.4 = Lt(aux01 num)
+    if t.4 goto if0_then else if0_else
+  while0_end:
+    ret ifound
+  if0_then:
+    nt = 0
+    goto if0_end
+  if0_else:
+    t.6 = Lt(aux01 aux02)
+    t.5 = Sub(1 t.6)
+    if t.5 goto if1_then else if1_else
+  if0_end:
+    j = Add(j 1)
+    goto while0_test
+  if1_then:
+    nt = 0
+    goto if1_end
+  if1_else:
+    ls01 = 1
+    ifound = 1
+    j = [this+1]
+    goto if1_end
+  if1_end:
+    goto if0_end
+
+func LS.Init(this sz)
+  entry:
+    [this+1] = sz
+    t.1 = Add(1 sz)
+    t.0 = Alloc(t.1)
+    [t.0] = sz
+    [this] = t.0
+    j = 1
+    t.2 = [this+1]
+    k = Add(t.2 1)
+    goto while0_test
+  while0_test:
+    t.4 = [this+1]
+    t.3 = Lt(j t.4)
+    if t.3 goto while0_body else while0_end
+  while0_body:
+    aux01 = Mul(2 j)
+    aux02 = Sub(k 3)
+    t.6 = Add(aux01 aux02)
+    t.5 = [this]
+    t.7 = Add(t.5 j)
+    [t.7+1] = t.6
+    j = Add(j 1)
+    k = Sub(k 1)
+    goto while0_test
+  while0_end:
+    ret 0
+

@@ -1,0 +1,126 @@
+func Main(a)
+  entry:
+    t.1 = Alloc(2)
+    t.0 = call BBS.Start(t.1 10)
+    PrintInt(t.0)
+    ret 
+
+func BBS.Start(this sz)
+  entry:
+    aux01 = call BBS.Init(this sz)
+    aux01 = call BBS.Print(this)
+    PrintInt(99999)
+    aux01 = call BBS.Sort(this)
+    aux01 = call BBS.Print(this)
+    ret 0
+
+func BBS.Sort(this)
+  entry:
+    t.0 = [this+1]
+    i = Sub(t.0 1)
+    aux02 = Sub(0 1)
+    goto while0_test
+  while0_test:
+    t.1 = Lt(aux02 i)
+    if t.1 goto while0_body else while0_end
+  while0_body:
+    j = 1
+    goto while1_test
+  while0_end:
+    ret 0
+  while1_test:
+    t.3 = Add(i 1)
+    t.2 = Lt(j t.3)
+    if t.2 goto while1_body else while1_end
+  while1_body:
+    aux07 = Sub(j 1)
+    t.4 = [this]
+    t.5 = Add(t.4 aux07)
+    aux04 = [t.5+1]
+    t.6 = [this]
+    t.7 = Add(t.6 j)
+    aux05 = [t.7+1]
+    t.8 = Lt(aux05 aux04)
+    if t.8 goto if0_then else if0_else
+  while1_end:
+    i = Sub(i 1)
+    goto while0_test
+  if0_then:
+    aux06 = Sub(j 1)
+    t.9 = [this]
+    t.10 = Add(t.9 aux06)
+    t = [t.10+1]
+    t.13 = [this]
+    t.14 = Add(t.13 j)
+    t.12 = [t.14+1]
+    t.11 = [this]
+    t.15 = Add(t.11 aux06)
+    [t.15+1] = t.12
+    t.16 = [this]
+    t.17 = Add(t.16 j)
+    [t.17+1] = t
+    goto if0_end
+  if0_else:
+    nt = 0
+    goto if0_end
+  if0_end:
+    j = Add(j 1)
+    goto while1_test
+
+func BBS.Print(this)
+  entry:
+    j = 0
+    goto while0_test
+  while0_test:
+    t.1 = [this+1]
+    t.0 = Lt(j t.1)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.3 = [this]
+    t.4 = Add(t.3 j)
+    t.2 = [t.4+1]
+    PrintInt(t.2)
+    j = Add(j 1)
+    goto while0_test
+  while0_end:
+    ret 0
+
+func BBS.Init(this sz)
+  entry:
+    [this+1] = sz
+    t.1 = Add(1 sz)
+    t.0 = Alloc(t.1)
+    [t.0] = sz
+    [this] = t.0
+    t.2 = [this]
+    t.3 = Add(t.2 0)
+    [t.3+1] = 20
+    t.4 = [this]
+    t.5 = Add(t.4 1)
+    [t.5+1] = 7
+    t.6 = [this]
+    t.7 = Add(t.6 2)
+    [t.7+1] = 12
+    t.8 = [this]
+    t.9 = Add(t.8 3)
+    [t.9+1] = 18
+    t.10 = [this]
+    t.11 = Add(t.10 4)
+    [t.11+1] = 2
+    t.12 = [this]
+    t.13 = Add(t.12 5)
+    [t.13+1] = 11
+    t.14 = [this]
+    t.15 = Add(t.14 6)
+    [t.15+1] = 6
+    t.16 = [this]
+    t.17 = Add(t.16 7)
+    [t.17+1] = 9
+    t.18 = [this]
+    t.19 = Add(t.18 8)
+    [t.19+1] = 19
+    t.20 = [this]
+    t.21 = Add(t.20 9)
+    [t.21+1] = 5
+    ret 0
+

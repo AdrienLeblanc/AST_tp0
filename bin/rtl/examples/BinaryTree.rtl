@@ -1,0 +1,390 @@
+func Main(a)
+  entry:
+    t.1 = Alloc(0)
+    t.0 = call BT.Start(t.1)
+    PrintInt(t.0)
+    ret 
+
+func BT.Start(this)
+  entry:
+    root = Alloc(6)
+    ntb = call Tree.Init(root 16)
+    ntb = call Tree.Print(root)
+    PrintInt(100000000)
+    ntb = call Tree.Insert(root 8)
+    ntb = call Tree.Print(root)
+    ntb = call Tree.Insert(root 24)
+    ntb = call Tree.Insert(root 4)
+    ntb = call Tree.Insert(root 12)
+    ntb = call Tree.Insert(root 20)
+    ntb = call Tree.Insert(root 28)
+    ntb = call Tree.Insert(root 14)
+    ntb = call Tree.Print(root)
+    t.0 = call Tree.Search(root 24)
+    PrintInt(t.0)
+    t.1 = call Tree.Search(root 12)
+    PrintInt(t.1)
+    t.2 = call Tree.Search(root 16)
+    PrintInt(t.2)
+    t.3 = call Tree.Search(root 50)
+    PrintInt(t.3)
+    t.4 = call Tree.Search(root 12)
+    PrintInt(t.4)
+    ntb = call Tree.Delete(root 12)
+    ntb = call Tree.Print(root)
+    t.5 = call Tree.Search(root 12)
+    PrintInt(t.5)
+    ret 0
+
+func Tree.Init(this v_key)
+  entry:
+    [this+2] = v_key
+    [this+3] = 0
+    [this+4] = 0
+    ret 1
+
+func Tree.SetRight(this rn)
+  entry:
+    [this+1] = rn
+    ret 1
+
+func Tree.SetLeft(this ln)
+  entry:
+    [this] = ln
+    ret 1
+
+func Tree.GetRight(this)
+  entry:
+    t.0 = [this+1]
+    ret t.0
+
+func Tree.GetLeft(this)
+  entry:
+    t.0 = [this]
+    ret t.0
+
+func Tree.GetKey(this)
+  entry:
+    t.0 = [this+2]
+    ret t.0
+
+func Tree.SetKey(this v_key)
+  entry:
+    [this+2] = v_key
+    ret 1
+
+func Tree.GetHas_Right(this)
+  entry:
+    t.0 = [this+4]
+    ret t.0
+
+func Tree.GetHas_Left(this)
+  entry:
+    t.0 = [this+3]
+    ret t.0
+
+func Tree.SetHas_Left(this val)
+  entry:
+    [this+3] = val
+    ret 1
+
+func Tree.SetHas_Right(this val)
+  entry:
+    [this+4] = val
+    ret 1
+
+func Tree.Compare(this num1 num2)
+  entry:
+    ntb = 0
+    nti = Add(num2 1)
+    t.0 = Lt(num1 num2)
+    if t.0 goto if0_then else if0_else
+  if0_then:
+    ntb = 0
+    goto if0_end
+  if0_else:
+    t.2 = Lt(num1 nti)
+    t.1 = Sub(1 t.2)
+    if t.1 goto if1_then else if1_else
+  if0_end:
+    ret ntb
+  if1_then:
+    ntb = 0
+    goto if1_end
+  if1_else:
+    ntb = 1
+    goto if1_end
+  if1_end:
+    goto if0_end
+
+func Tree.Insert(this v_key)
+  entry:
+    new_node = Alloc(6)
+    ntb = call Tree.Init(new_node v_key)
+    current_node = this
+    cont = 1
+    goto while0_test
+  while0_test:
+    if cont goto while0_body else while0_end
+  while0_body:
+    key_aux = call Tree.GetKey(current_node)
+    t.0 = Lt(v_key key_aux)
+    if t.0 goto if0_then else if0_else
+  while0_end:
+    ret 1
+  if0_then:
+    t.1 = call Tree.GetHas_Left(current_node)
+    if t.1 goto if1_then else if1_else
+  if0_else:
+    t.2 = call Tree.GetHas_Right(current_node)
+    if t.2 goto if2_then else if2_else
+  if0_end:
+    goto while0_test
+  if1_then:
+    current_node = call Tree.GetLeft(current_node)
+    goto if1_end
+  if1_else:
+    cont = 0
+    ntb = call Tree.SetHas_Left(current_node 1)
+    ntb = call Tree.SetLeft(current_node new_node)
+    goto if1_end
+  if1_end:
+    goto if0_end
+  if2_then:
+    current_node = call Tree.GetRight(current_node)
+    goto if2_end
+  if2_else:
+    cont = 0
+    ntb = call Tree.SetHas_Right(current_node 1)
+    ntb = call Tree.SetRight(current_node new_node)
+    goto if2_end
+  if2_end:
+    goto if0_end
+
+func Tree.Delete(this v_key)
+  entry:
+    current_node = this
+    parent_node = this
+    cont = 1
+    found = 0
+    is_root = 1
+    goto while0_test
+  while0_test:
+    if cont goto while0_body else while0_end
+  while0_body:
+    key_aux = call Tree.GetKey(current_node)
+    t.0 = Lt(v_key key_aux)
+    if t.0 goto if0_then else if0_else
+  while0_end:
+    ret found
+  if0_then:
+    t.1 = call Tree.GetHas_Left(current_node)
+    if t.1 goto if1_then else if1_else
+  if0_else:
+    t.2 = Lt(key_aux v_key)
+    if t.2 goto if2_then else if2_else
+  if0_end:
+    is_root = 0
+    goto while0_test
+  if1_then:
+    parent_node = current_node
+    current_node = call Tree.GetLeft(current_node)
+    goto if1_end
+  if1_else:
+    cont = 0
+    goto if1_end
+  if1_end:
+    goto if0_end
+  if2_then:
+    t.3 = call Tree.GetHas_Right(current_node)
+    if t.3 goto if3_then else if3_else
+  if2_else:
+    if is_root goto if4_then else if4_else
+  if2_end:
+    goto if0_end
+  if3_then:
+    parent_node = current_node
+    current_node = call Tree.GetRight(current_node)
+    goto if3_end
+  if3_else:
+    cont = 0
+    goto if3_end
+  if3_end:
+    goto if2_end
+  if4_then:
+    t.6 = call Tree.GetHas_Right(current_node)
+    t.5 = Sub(1 t.6)
+    t.8 = call Tree.GetHas_Left(current_node)
+    t.7 = Sub(1 t.8)
+    t.4 = And(t.5 t.7)
+    if t.4 goto if5_then else if5_else
+  if4_else:
+    ntb = call Tree.Remove(this parent_node current_node)
+    goto if4_end
+  if4_end:
+    found = 1
+    cont = 0
+    goto if2_end
+  if5_then:
+    ntb = 1
+    goto if5_end
+  if5_else:
+    ntb = call Tree.Remove(this parent_node current_node)
+    goto if5_end
+  if5_end:
+    goto if4_end
+
+func Tree.Remove(this p_node c_node)
+  entry:
+    t.0 = call Tree.GetHas_Left(c_node)
+    if t.0 goto if0_then else if0_else
+  if0_then:
+    ntb = call Tree.RemoveLeft(this p_node c_node)
+    goto if0_end
+  if0_else:
+    t.1 = call Tree.GetHas_Right(c_node)
+    if t.1 goto if1_then else if1_else
+  if0_end:
+    ret 1
+  if1_then:
+    ntb = call Tree.RemoveRight(this p_node c_node)
+    goto if1_end
+  if1_else:
+    auxkey1 = call Tree.GetKey(c_node)
+    t.2 = call Tree.GetLeft(p_node)
+    auxkey2 = call Tree.GetKey(t.2)
+    t.3 = call Tree.Compare(this auxkey1 auxkey2)
+    if t.3 goto if2_then else if2_else
+  if1_end:
+    goto if0_end
+  if2_then:
+    t.4 = [this+5]
+    ntb = call Tree.SetLeft(p_node t.4)
+    ntb = call Tree.SetHas_Left(p_node 0)
+    goto if2_end
+  if2_else:
+    t.5 = [this+5]
+    ntb = call Tree.SetRight(p_node t.5)
+    ntb = call Tree.SetHas_Right(p_node 0)
+    goto if2_end
+  if2_end:
+    goto if1_end
+
+func Tree.RemoveRight(this p_node c_node)
+  entry:
+    goto while0_test
+  while0_test:
+    t.0 = call Tree.GetHas_Right(c_node)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.2 = call Tree.GetRight(c_node)
+    t.1 = call Tree.GetKey(t.2)
+    ntb = call Tree.SetKey(c_node t.1)
+    p_node = c_node
+    c_node = call Tree.GetRight(c_node)
+    goto while0_test
+  while0_end:
+    t.3 = [this+5]
+    ntb = call Tree.SetRight(p_node t.3)
+    ntb = call Tree.SetHas_Right(p_node 0)
+    ret 1
+
+func Tree.RemoveLeft(this p_node c_node)
+  entry:
+    goto while0_test
+  while0_test:
+    t.0 = call Tree.GetHas_Left(c_node)
+    if t.0 goto while0_body else while0_end
+  while0_body:
+    t.2 = call Tree.GetLeft(c_node)
+    t.1 = call Tree.GetKey(t.2)
+    ntb = call Tree.SetKey(c_node t.1)
+    p_node = c_node
+    c_node = call Tree.GetLeft(c_node)
+    goto while0_test
+  while0_end:
+    t.3 = [this+5]
+    ntb = call Tree.SetLeft(p_node t.3)
+    ntb = call Tree.SetHas_Left(p_node 0)
+    ret 1
+
+func Tree.Search(this v_key)
+  entry:
+    current_node = this
+    cont = 1
+    ifound = 0
+    goto while0_test
+  while0_test:
+    if cont goto while0_body else while0_end
+  while0_body:
+    key_aux = call Tree.GetKey(current_node)
+    t.0 = Lt(v_key key_aux)
+    if t.0 goto if0_then else if0_else
+  while0_end:
+    ret ifound
+  if0_then:
+    t.1 = call Tree.GetHas_Left(current_node)
+    if t.1 goto if1_then else if1_else
+  if0_else:
+    t.2 = Lt(key_aux v_key)
+    if t.2 goto if2_then else if2_else
+  if0_end:
+    goto while0_test
+  if1_then:
+    current_node = call Tree.GetLeft(current_node)
+    goto if1_end
+  if1_else:
+    cont = 0
+    goto if1_end
+  if1_end:
+    goto if0_end
+  if2_then:
+    t.3 = call Tree.GetHas_Right(current_node)
+    if t.3 goto if3_then else if3_else
+  if2_else:
+    ifound = 1
+    cont = 0
+    goto if2_end
+  if2_end:
+    goto if0_end
+  if3_then:
+    current_node = call Tree.GetRight(current_node)
+    goto if3_end
+  if3_else:
+    cont = 0
+    goto if3_end
+  if3_end:
+    goto if2_end
+
+func Tree.Print(this)
+  entry:
+    current_node = this
+    ntb = call Tree.RecPrint(this current_node)
+    ret 1
+
+func Tree.RecPrint(this node)
+  entry:
+    t.0 = call Tree.GetHas_Left(node)
+    if t.0 goto if0_then else if0_else
+  if0_then:
+    t.1 = call Tree.GetLeft(node)
+    ntb = call Tree.RecPrint(this t.1)
+    goto if0_end
+  if0_else:
+    ntb = 1
+    goto if0_end
+  if0_end:
+    t.2 = call Tree.GetKey(node)
+    PrintInt(t.2)
+    t.3 = call Tree.GetHas_Right(node)
+    if t.3 goto if1_then else if1_else
+  if1_then:
+    t.4 = call Tree.GetRight(node)
+    ntb = call Tree.RecPrint(this t.4)
+    goto if1_end
+  if1_else:
+    ntb = 1
+    goto if1_end
+  if1_end:
+    ret 1
+

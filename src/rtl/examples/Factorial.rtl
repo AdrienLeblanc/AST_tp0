@@ -1,0 +1,22 @@
+func Main(a)
+  entry:
+    t.1 = Alloc(1)
+    t.0 = call Fac.ComputeFac(t.1 10)
+    PrintInt(t.0)
+    ret 
+
+func Fac.ComputeFac(this num)
+  entry:
+    t.0 = Lt(num 1)
+    if t.0 goto if0_then else if0_else
+  if0_then:
+    num_aux = 1
+    goto if0_end
+  if0_else:
+    t.2 = Sub(num 1)
+    t.1 = call Fac.ComputeFac(this t.2)
+    num_aux = Mul(num t.1)
+    goto if0_end
+  if0_end:
+    ret num_aux
+

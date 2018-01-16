@@ -1,0 +1,28 @@
+func Main(a)
+  entry:
+    t.1 = Alloc(0)
+    t.0 = call MT4.Start(t.1 1 2 3 4 5 6)
+    PrintInt(t.0)
+    ret 
+
+func MT4.Start(this p1 p2 p3 p4 p5 p6)
+  entry:
+    PrintInt(p1)
+    PrintInt(p2)
+    PrintInt(p3)
+    PrintInt(p4)
+    PrintInt(p5)
+    PrintInt(p6)
+    aux = call MT4.Change(this p6 p5 p4 p3 p2 p1)
+    ret aux
+
+func MT4.Change(this p1 p2 p3 p4 p5 p6)
+  entry:
+    PrintInt(p1)
+    PrintInt(p2)
+    PrintInt(p3)
+    PrintInt(p4)
+    PrintInt(p5)
+    PrintInt(p6)
+    ret 0
+
